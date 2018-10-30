@@ -6,6 +6,10 @@ from time import time
 from process_data import load_data
 from parameters import model_params
 
+__author__ = 'Ehsan Khodabandeh'
+__version__ = '1.0'
+# ====================================
+
 LOG_FORMAT = '%(asctime)s  %(name)-12s %(levelname)s : %(message)s'
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 logger = logging.getLogger(__name__ + ': ')

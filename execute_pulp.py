@@ -9,6 +9,10 @@ import helper
 import process_data
 from parameters import model_params
 
+__author__ = 'Ehsan Khodabandeh'
+__version__ = '1.0'
+# ====================================
+
 LOG_FORMAT = '%(asctime)s  %(name)-12s %(levelname)s : %(message)s'
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 # Since the level here is INFO, all the logger.debug below are not displayed

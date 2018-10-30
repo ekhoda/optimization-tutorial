@@ -6,6 +6,10 @@ from helper import write_to_csv
 from parameters import model_params
 from process_data import write_outputs
 
+__author__ = 'Ehsan Khodabandeh'
+__version__ = '1.0'
+# ====================================
+
 logger = logging.getLogger(__name__ + ': ')
 
 
