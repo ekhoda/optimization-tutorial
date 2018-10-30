@@ -104,7 +104,8 @@ class OptimizationModel(object):
         logger.info('Optimization starts!')
         _solver = pulp.PULP_CBC_CMD(keepFiles=model_params['write_log'],
                                     fracGap=model_params['mip_gap'],
-                                    maxSeconds=model_params['time_limit'])
+                                    maxSeconds=model_params['time_limit'],
+                                    msg=model_params['display_log'])
 
         if model_params['solver'] == 'gurobi':
             _solver = pulp.GUROBI(msg=model_params['write_log'],
@@ -116,7 +117,8 @@ class OptimizationModel(object):
                 set_mip_gap = "set mip tolerances mipgap {}".format(model_params['mip_gap'])
                 options.append(set_mip_gap)
             _solver = pulp.CPLEX_CMD(keepFiles=model_params['write_log'],
-                                     options=options, timelimit=model_params['time_limit'])
+                                     options=options, timelimit=model_params['time_limit'],
+                                     msg=model_params['display_log'])
         elif model_params['solver'] == 'glpk':
             # Read more about glpk options: https://en.wikibooks.org/wiki/GLPK/Using_GLPSOL
             options = []
@@ -126,7 +128,8 @@ class OptimizationModel(object):
             if model_params['time_limit']:
                 set_time_limit = "--tmlim {}".format(model_params['time_limit'])
                 options.append(set_time_limit)
-            _solver = pulp.GLPK_CMD(keepFiles=model_params['write_log'], options=options)
+            _solver = pulp.GLPK_CMD(keepFiles=model_params['write_log'], options=options,
+                                    msg=model_params['display_log'])
 
         self.model.solve(solver=_solver)
 

@@ -5,7 +5,8 @@ model_params = {
     'solver': None,  # default is None for 'cbc'; can also be 'gurobi', 'cplex', 'glpk'
     'module': None,  # default is None for pulp; 'gurobi' for using gurobi
     'write_lp': True,  # whether to write the model .lp file
-    'write_log': False,  # whether to write the output .log file
+    'write_log': False,  # whether to keep the output files such as .sol or .mps (or .log for cplex or gurobi)
+    'display_log': False,  # displays information from the solver to stdout
     'mip_gap': None,  # default is None to use the solver's default value. Can be any float less than 1.0
     'time_limit': None,  # in seconds
 }
