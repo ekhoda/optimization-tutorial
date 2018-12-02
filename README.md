@@ -1,4 +1,4 @@
-# A Simple Framework For Solving Optimization Problems in Python
+# A Simple Framework For Solving Optimization Problems in Python  [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Tutorial%3A%20A%20Simple%20Framework%20For%20Solving%20Optimization%20Problems%20in%20Python&url=https://github.com/ekhoda/optimization-tutorial&via=EhsanKhoda&hashtags=python,orms,programming,optimization)
 The framework is shown using a simple production planning example. The optimization model is written in `pulp` and the use of 4 different solvers is shown: CBC (default), Gurobi, CPLEX, and GLPK.
 For reference, the optimization model is also written and solved with `gurobipy`.
 
