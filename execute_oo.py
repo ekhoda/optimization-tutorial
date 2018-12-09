@@ -23,6 +23,9 @@ start = time()
 if model_params['module'] == 'gurobi':
     from optimization_model_gurobi import OptimizationModel
     optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
+elif model_params['module'] == 'cplex':
+    from optimization_model_docplex import OptimizationModel
+    optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
 else:
     from optimization_model_pulp import OptimizationModel
     optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
