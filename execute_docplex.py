@@ -120,7 +120,20 @@ if model_params['write_lp']:
     model.export_as_lp('./{}.lp'.format(model.name))
 
 logger.info('Optimization starts!')
-if model.solve():
+
+# If CPLEX is installed locally, we can use that to solve the problem.
+# Otherwise, we can use DOcplexcloud. For docloud solve, we need valid 'url' and 'key'.
+# Note, that if 'url' and 'key' parameters are present,
+# the solve will be started on DOcplexcloud even if CPLEX is available.
+# I've provided more info on this in optimization_model_docplex.py
+
+# For now, a simple way to handle local or docloud solve
+if model_params['cplex_cloud']:
+    model.solve(url=model_params['url'], key=model_params['api_key'])
+else:
+    model.solve()
+
+if model.solve_details.status == 'optimal':
     logger.info('The solution is optimal and the objective value '
                 'is ${:,.2f}!'.format(model.objective_value))
 

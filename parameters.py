@@ -9,4 +9,9 @@ model_params = {
     'display_log': False,  # displays information from the solver to stdout
     'mip_gap': None,  # default is None to use the solver's default value. Can be any float less than 1.0
     'time_limit': None,  # in seconds
+    'cplex_cloud': False,  # control whether cplex solve runs locally or on cloud
+    # Check here to learn how to get url and api for docloud:
+    # https://developer.ibm.com/docloud/documentation/decision-optimization-on-cloud/api-key/
+    'url': 'https://your_application_url.com',
+    'api_key': 'your_key',
 }

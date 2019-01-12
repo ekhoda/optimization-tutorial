@@ -1,6 +1,7 @@
 import logging
 
 import docplex.mp.model as cpx
+from docplex.mp.context import Context
 
 from helper import write_to_csv
 from parameters import model_params
@@ -75,22 +76,45 @@ class OptimizationModel(object):
 
     # ================== Optimization ==================
     def optimize(self):
+        """
+        If CPLEX is installed locally, we can use that to solve the problem.
+        Otherwise, we can use DOcplexcloud. For docloud solve, we need valid 'url' and 'key'.
+        Note, that if 'url' and 'key' parameters are present,
+        the solve will be started on DOcplexcloud even if CPLEX is available.
+            e.g. this forces the solve on DOcplexcloud:
+            model.solve(url='https://foo.com', key='bar')
+
+        Using 'docplex.mp.context.Context', it is possible to control how to solve.
+        """
+
         if model_params['write_lp']:
             logger.info('Writing the lp file!')
             self.model.export_as_lp('./{}.lp'.format(self.model.name))
 
-        logger.info('Optimization starts!')
+        ctx = Context()
+        ctx.solver.docloud.url = model_params['url']
+        ctx.solver.docloud.key = model_params['api_key']
+        agent = 'docloud' if model_params['cplex_cloud'] else 'local'
+
+        # There are several ways to set the parameters. Here are two ways:
+        # method 1:
         if model_params['mip_gap']:
             self.model.parameters.mip.tolerances.mipgap = model_params['mip_gap']
         if model_params['time_limit']:
             self.model.set_time_limit(model_params['time_limit'])
 
+        # # method 2:
+        # cplex_parameters = {'mip.tolerances.mipgap': model_params['mip_gap'],
+        #                     'timelimit': model_params['time_limit']}
+        # ctx.update(cplex_parameters, create_missing_nodes=True)
+
+        logger.info('Optimization starts!')
         if model_params['write_log']:
             with open("cplex.log", "w") as outs:
                 # prints CPLEX output to file "cplex.log"
-                self.model.solve(log_output=outs)
+                self.model.solve(context=ctx, agent=agent, log_output=outs)
         else:
-            self.model.solve(log_output=model_params['display_log'])
+            self.model.solve(context=ctx, agent=agent, log_output=model_params['display_log'])
 
         if self.model.solve_details.status == 'optimal':
             logger.info('The solution is optimal and the objective value '
