@@ -13,6 +13,8 @@ You can start your journey of learning `pulp`, `gurobipy`, or `docplex` using `e
 
 Regardless of the approach, we use the functionalities defined in `helper.py`, `process_data.py`, and `parameters.py` modules.
 
+Note that compared to the standalone `execute_*.py` modules, the `optimization_model_*.py` modules have more details in their `optimize` function that show handling of various parameters. Moreover, `optimization_model_docplex.py` shows how to solve the model, using the local installation of CPLEX or with DOcplexcloud.
+
 ## Production Planning Example
 We are responsible for scheduling the monthly production plan of a product for a year. Here are the assumptions:
 - The demand of the product, unit production cost, and production capacity in each month are known and can be found [here](data/csv/input_data.csv).
