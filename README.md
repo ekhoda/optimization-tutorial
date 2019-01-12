@@ -1,15 +1,15 @@
 # A Simple Framework For Solving Optimization Problems in Python  [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Tutorial%3A%20A%20Simple%20Framework%20For%20Solving%20Optimization%20Problems%20in%20Python&url=https://github.com/ekhoda/optimization-tutorial&via=EhsanKhoda&hashtags=python,orms,programming,optimization)
 The framework is shown using a simple production planning example. The optimization model is written in `pulp` and the use of 4 different solvers is shown: CBC (default), Gurobi, CPLEX, and GLPK.
-For reference, the optimization model is also written and solved with `gurobipy`.
+For reference, the optimization model is also written and solved with `gurobipy` and `docplex`.
 
 ## Modules
-All the modules that start with `execute` can be run as the main module. The optimization problem is modeled using `pulp` or `gurobipy` packages. The codes are written for two different approaches: 1) scripting and 2) a more modular and object-oriented approach. 
+All the modules that start with `execute` can be run as the main module. The optimization problem is modeled using `pulp`, `gurobipy`, or `docplex` packages. The codes are written for two different approaches: 1) scripting and 2) a more modular and object-oriented approach. 
 
 ### Scripting
-You can start your journey of learning `pulp` or `gurobipy` using `execute_pulp.py` and `execute_grb.py` scripts. There is documentation in each of these modules to learn different ways of defining variables and constraints.
+You can start your journey of learning `pulp`, `gurobipy`, or `docplex` using `execute_pulp.py`, `execute_grb.py`, and `execute_docplex.py` scripts, respectively. There is documentation in each of these modules to learn different ways of defining variables and constraints.
 
 ### Object-Oriented Approach
-`execute_oo.py` is the starting module of this approach. Depending on what you like to learn, check `optimization_model_pulp.py` or `optimization_model.grb.py`. Due to similarities between these two modules and what was described in the `execute_pulp.py` and `execute_grb.py`, some of the documentation are eliminated.
+`execute_oo.py` is the starting module of this approach. Depending on what you like to learn, check `optimization_model_pulp.py`, `optimization_model.grb.py`, or `optimization_model_docplex.py`. Due to similarities between these modules and what was described in the `execute_pulp.py`, `execute_grb.py`, and `execute_docplex.py`, some of the documentation are eliminated.
 
 Regardless of the approach, we use the functionalities defined in `helper.py`, `process_data.py`, and `parameters.py` modules.
 
