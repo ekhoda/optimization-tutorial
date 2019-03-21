@@ -10,6 +10,7 @@ You can start your journey of learning `pulp`, `gurobipy`, or `docplex` using `e
 
 ### Object-Oriented Approach
 `execute_oo.py` is the starting module of this approach. Depending on what you like to learn, check `optimization_model_pulp.py`, `optimization_model.grb.py`, or `optimization_model_docplex.py`. Due to similarities between these modules and what was described in the `execute_pulp.py`, `execute_grb.py`, and `execute_docplex.py`, some of the documentation are eliminated.
+The default values in `parameters.py` are set to run the model in `pulp` which is also what you should expect by running `execute_oo.py`. If you wish `execute_oo.py` to run the model with CPLEX or Gurobi, the least you should do is to change the value of `module` to `'cplex'` or `'gurobi'`, respectively, in the `parameters.py`.
 
 Regardless of the approach, we use the functionalities defined in `helper.py`, `process_data.py`, and `parameters.py` modules.
 
