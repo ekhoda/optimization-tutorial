@@ -29,14 +29,24 @@ def _create_outputs_df(opt_series, cols, name, output_df_dict):
 def write_outputs(dict_of_variables, attr='varValue'):
     """
     The outputs we want are very simple and can be achieved almost identically
-    in either pulp or gurobi. The only difference is in the attribute name of their
+    in either modules. The only difference is in the attribute name of their
     decision variable value.
-    In gurobi you get it by 'your_dv.x' and in pulp by 'your_dv.varValue'.
+    In gurobi you get it by 'your_dv.x',
+    in pulp by 'your_dv.varValue',
+    in cplex by 'your_dv.solution_value'.
     """
-
     output_df_dict = {}
     cols = ['period', 'value']
     for name, var in dict_of_variables.items():
         opt_series = pd.Series({k + 1: getattr(v, attr) for k, v in var.items()})
+        _create_outputs_df(opt_series, cols, name, output_df_dict)
+    return output_df_dict
+
+
+def write_outputs_xpress(dict_of_variables, model):
+    output_df_dict = {}
+    cols = ['period', 'value']
+    for name, var in dict_of_variables.items():
+        opt_series = pd.Series({k + 1: model.getSolution(v) for k, v in var.items()})
         _create_outputs_df(opt_series, cols, name, output_df_dict)
     return output_df_dict
