@@ -7,7 +7,7 @@ from parameters import model_params
 from process_data import write_outputs
 
 __author__ = 'Ehsan Khodabandeh'
-__version__ = '1.0'
+__version__ = '1.1'
 # ====================================
 
 logger = logging.getLogger(__name__ + ': ')
@@ -100,46 +100,40 @@ class OptimizationModel(object):
         Default solver is 'cbc' unless solver is set to something else.
         You may need to provide a path for any of the solvers using 'path' argument.
         """
+        _solver = None
+        s_name = model_params['solver']
+        w_log = model_params['write_log']
+        disp_log = model_params['display_log']
+        mip_gap = model_params['mip_gap']
+        tl = model_params['time_limit']
 
         if model_params['write_lp']:
             logger.info('Writing the lp file!')
             self.model.writeLP(self.model.name + '.lp')
 
-        logger.info('Optimization starts!')
-        _solver = pulp.PULP_CBC_CMD(keepFiles=model_params['write_log'],
-                                    fracGap=model_params['mip_gap'],
-                                    maxSeconds=model_params['time_limit'],
-                                    msg=model_params['display_log'])
-
-        if model_params['solver'] == 'gurobi':
-            _solver = pulp.GUROBI(msg=model_params['write_log'],
-                                  timeLimit=model_params['time_limit'],
-                                  epgap=model_params['mip_gap'])
-        elif model_params['solver'] == 'cplex':
-            options = []
-            if model_params['mip_gap']:
-                set_mip_gap = "set mip tolerances mipgap {}".format(model_params['mip_gap'])
-                options.append(set_mip_gap)
-            _solver = pulp.CPLEX_CMD(keepFiles=model_params['write_log'],
-                                     options=options, timelimit=model_params['time_limit'],
-                                     msg=model_params['display_log'])
-        elif model_params['solver'] == 'glpk':
+        if not s_name or s_name == 'cbc':
+            _solver = pulp.PULP_CBC_CMD(keepFiles=w_log, msg=disp_log, gapRel=mip_gap, timeLimit=tl)
+        elif s_name == 'gurobi':
+            # One can use GUROBI_CMD like CPLEX_CMD and pass mip_gap and time_limit as options
+            _solver = pulp.GUROBI(msg=w_log, gapRel=mip_gap, timeLimit=tl)
+        elif s_name == 'cplex':
+            _solver = pulp.CPLEX_CMD(keepFiles=w_log, msg=disp_log, gapRel=mip_gap, timelimit=tl)
+        elif s_name == 'glpk':
             # Read more about glpk options: https://en.wikibooks.org/wiki/GLPK/Using_GLPSOL
             options = []
-            if model_params['mip_gap']:
-                set_mip_gap = "--mipgap {}".format(model_params['mip_gap'])
+            if mip_gap:
+                set_mip_gap = f'--mipgap {mip_gap}'
                 options.append(set_mip_gap)
-            if model_params['time_limit']:
-                set_time_limit = "--tmlim {}".format(model_params['time_limit'])
-                options.append(set_time_limit)
-            _solver = pulp.GLPK_CMD(keepFiles=model_params['write_log'], options=options,
-                                    msg=model_params['display_log'])
+            _solver = pulp.GLPK_CMD(keepFiles=w_log, msg=disp_log, options=options, timeLimit=tl)
+        elif s_name == 'xpress':
+            _solver = pulp.XPRESS(keepFiles=w_log, msg=disp_log, gapRel=mip_gap, timeLimit=tl)
 
+        logger.info('Optimization starts!')
         self.model.solve(solver=_solver)
 
         if self.model.status == pulp.LpStatusOptimal:
-            logger.info('The solution is optimal and the objective value '
-                        'is ${:,.2f}'.format(pulp.value(self.model.objective)))
+            logger.info(f'The solution is optimal and the objective value '
+                        f'is ${self.model.objective.value():,.2f}')
 
     # ================== Output ==================
     def create_output(self):
