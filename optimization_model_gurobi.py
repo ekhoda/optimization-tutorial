@@ -91,6 +91,9 @@ class OptimizationModel(object):
         if not model_params['write_log']:
             self.model.setParam('OutputFlag', 0)
 
+        if not model_params['display_log']:  # to enable or disable console logging
+            self.model.setParam('LogToConsole', 0)
+
         logger.info('Optimization starts!')
         if model_params['mip_gap']:
             self.model.setParam(grb.GRB.Param.MIPGap, model_params['mip_gap'])
