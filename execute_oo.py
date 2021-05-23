@@ -6,8 +6,17 @@ from time import time
 from process_data import load_data
 from parameters import model_params
 
+if model_params['module'] == 'gurobi':
+    from optimization_model_gurobi import OptimizationModel
+elif model_params['module'] == 'cplex':
+    from optimization_model_docplex import OptimizationModel
+elif model_params['module'] == 'xpress':
+    from optimization_model_xpress import OptimizationModel
+else:
+    from optimization_model_pulp import OptimizationModel
+
 __author__ = 'Ehsan Khodabandeh'
-__version__ = '1.0'
+__version__ = '1.1'
 # ====================================
 
 LOG_FORMAT = '%(asctime)s  %(name)-12s %(levelname)s : %(message)s'
@@ -18,19 +27,10 @@ logger = logging.getLogger(__name__ + ': ')
 input_df_dict, input_param_dict = load_data()
 logger.info('Data is loaded!')
 
-start = time()
 # ================== Optimization ==================
-if model_params['module'] == 'gurobi':
-    from optimization_model_gurobi import OptimizationModel
-    optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
-elif model_params['module'] == 'cplex':
-    from optimization_model_docplex import OptimizationModel
-    optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
-else:
-    from optimization_model_pulp import OptimizationModel
-    optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
-
-logger.info('Model creation time in sec: {:.4f}'.format(time() - start))
+start = time()
+optimizer = OptimizationModel(input_df_dict['input_data'], input_param_dict)
+logger.info(f'Model creation time in sec: {time() - start:.4f}')
 optimizer.optimize()
 
 # ================== Output ==================
